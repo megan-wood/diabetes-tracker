@@ -11,7 +11,7 @@ export default async function ProtectedPage() {
   if (error || !data?.claims) {
     redirect("/auth/login");
   }
-
+  
   return (
     <div className="flex-1 w-full flex flex-col gap-12">
       <div className="w-full">
@@ -26,6 +26,8 @@ export default async function ProtectedPage() {
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
           {JSON.stringify(data.claims, null, 2)}
         </pre>
+      </div>
+      <div> 
       </div>
       <div>
         <h2 className="font-bold text-2xl mb-4">Next steps</h2>
