@@ -3,14 +3,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+// import { GlucoseForm } from "./glucose-form";
+import GlucoseForm from "./glucose-form";
+
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
@@ -32,6 +27,13 @@ export default async function ProtectedPage() {
       .single();
     profile = profileData; 
   }
+
+  const handleNewData = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // const supabase = createClient();
+
+
+  }
   
   return (
     // <div className="flex-1 w-full flex flex-col gap-12">
@@ -50,19 +52,7 @@ export default async function ProtectedPage() {
         <h3 className="font-bold ">{profile.first_name}, Welcome to your Diabetes Dashboard</h3>
 
         <h2>Current Trends:</h2>
-        <Dialog>
-          <DialogTrigger>Add a glucose value</DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Adding Glucose Value</DialogTitle>
-              <DialogDescription>
-                Please type in the glucose value. 
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-
-
-        </Dialog>
+        <GlucoseForm/>
     </div>
   );
 }
