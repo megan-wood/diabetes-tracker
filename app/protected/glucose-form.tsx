@@ -34,8 +34,9 @@ export default function GlucoseForm() {
 
     const [glucose, setGlucose] = useState("");
     const [open, setOpen] = useState(false); 
-    const [date, setDate] = useState<Date | undefined>(undefined);
-    const [time, setTime] = useState(new Date()); 
+    // const [date, setDate] = useState<Date | undefined>(undefined);
+    const [date, setDate] = useState<Date>(new Date());
+    // const [time, setTime] = useState(new Date()); 
     // const [date, setDate] = useState<Date>(new Date());
     const [curTime, setCurTime] = useState(getCurTimeStr());
 
@@ -81,7 +82,8 @@ export default function GlucoseForm() {
                                     id="dateTime"
                                     className="w-32 justify-between font-formal"
                                 >
-                                    {date ? date.toLocaleDateString() : "Select date"}
+                                    {date.toLocaleDateString()}
+                                    {/* {date ? date.toLocaleDateString() : "Select date"} */}
                                     <ChevronDownIcon/>
                                 </Button>
                             </PopoverTrigger>
@@ -92,8 +94,8 @@ export default function GlucoseForm() {
                                     selected={date}
                                     captionLayout="dropdown"
                                     onSelect={(date) => {
-                                        setDate(date)
-                                        setOpen(false)
+                                        // setDate(date)
+                                        // setOpen(false)
                                     }}
                                         />
                             </PopoverContent>
@@ -105,7 +107,6 @@ export default function GlucoseForm() {
                                 id="time-picker"
                                 step="1"
                                 defaultValue={curTime}
-                                value={curTime}
                                 onChange={(e) => setCurTime(e.target.value)}
                                 className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                               />
