@@ -82,17 +82,17 @@ export default function GlucoseForm() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button>Add a glucose value</Button>
+              <Button className="w-[25%]" >Add a glucose value</Button>
             </DialogTrigger>
             <DialogContent>
               <form onSubmit={handleNewData}>
                 <DialogHeader>
                   <DialogTitle>Adding Glucose Value</DialogTitle>
-                  <DialogDescription>
+                  <DialogDescription className="mb-2">
                     Please type in the glucose value. 
                   </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 pb-5">
                   <div className="flex flex-col gap-2">
                       <Label htmlFor="glucose">Glucose Value</Label>
                       <Input 
@@ -149,9 +149,9 @@ export default function GlucoseForm() {
                 </div>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline" className="px-4 py-2">Cancel</Button>
                   </DialogClose>
-                  <Button type="submit">Save data</Button>
+                  <Button type="submit" className="border px-4 py-2">Save data</Button>
                 </DialogFooter>
               </form>
             </DialogContent>
