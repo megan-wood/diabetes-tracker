@@ -45,84 +45,117 @@ export default function GlucoseForm() {
     const handleNewData = async (e: React.FormEvent) => {
         e.preventDefault();
         const supabase = createClient(); 
+        const {data: { user } } = await supabase.auth.getUser();
+        // const user = await supabase.auth.getUser();
+        console.log("user data: ", user); 
+
+        if (!user) {
+          console.log("user is not logged in"); 
+          return alert("You must be logged in!");
+        }
+
+        console.log("logged in user: ", user.id); 
+
+        const { data, error : profileError} = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id);
+        console.log("profile data: ", data); 
+
+        // const profilesUserId = await supabase.
+        
+        // combines selected date and time into single Date element to insert in db
+        const [hours, mins] = curTime.split(":").map(Number);
+        const datetime = new Date(date);
+        datetime.setHours(hours, mins, 0, 0);
+
+
+        // make sure id is unique to identify the row and user id should keep track of val from
+        const { error } = await supabase
+          .from("glucose_logs")
+          .insert({user_id: user.id, time: datetime, glucose_value: glucose});
+        if (!error) {
+          setOpen(false);
+        }
     }
 
     return (
-        <Dialog>
-          <form onSubmit={handleNewData}>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button>Add a glucose value</Button>
             </DialogTrigger>
             <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Adding Glucose Value</DialogTitle>
-                <DialogDescription>
-                  Please type in the glucose value. 
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-2">
-                    <Label htmlFor="glucose">Glucose Value</Label>
-                    <Input 
-                        id="glucose"
-                        type="number"
-                        placeholder="100"
-                        required
-                        value={glucose}
-                        onChange={(e) => setGlucose(e.target.value)}
-                    />
+              <form onSubmit={handleNewData}>
+                <DialogHeader>
+                  <DialogTitle>Adding Glucose Value</DialogTitle>
+                  <DialogDescription>
+                    Please type in the glucose value. 
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
+                      <Label htmlFor="glucose">Glucose Value</Label>
+                      <Input 
+                          id="glucose"
+                          type="number"
+                          placeholder="100"
+                          required
+                          value={glucose}
+                          onChange={(e) => setGlucose(e.target.value)}
+                      />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                      <Label htmlFor="dateTime">Date and Time</Label>
+                      <div className="flex justify-center">
+                          {/* <Popover open={open} onOpenChange={setOpen}> */}
+                          <Popover>
+                              <PopoverTrigger asChild>
+                                  <Button 
+                                      variant="outline"
+                                      id="dateTime"
+                                      className="w-32 justify-between font-formal"
+                                  >
+                                      {date.toLocaleDateString()}
+                                      {/* {date ? date.toLocaleDateString() : "Select date"} */}
+                                      <ChevronDownIcon/>
+                                  </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[150%] overflow-hidden p-1" align="start">
+                                  <Calendar
+                                      className="w-full text-base"
+                                      mode="single"
+                                      selected={date}
+                                      captionLayout="dropdown"
+                                      onSelect={(date) => {
+                                          // setDate(date)
+                                          // setOpen(false)
+                                      }}
+                                          />
+                              </PopoverContent>
+                          </Popover>
+                          <div className="flex flex-col">
+                              <Label htmlFor="time-picker" className=""></Label>
+                              <Input
+                                  type="time"
+                                  id="time-picker"
+                                  step="1"
+                                  defaultValue={curTime}
+                                  onChange={(e) => setCurTime(e.target.value)}
+                                  className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                                />
+                          </div>
+                      </div>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                    <Label htmlFor="dateTime">Date and Time</Label>
-                    <div className="flex justify-center">
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button 
-                                    variant="outline"
-                                    id="dateTime"
-                                    className="w-32 justify-between font-formal"
-                                >
-                                    {date.toLocaleDateString()}
-                                    {/* {date ? date.toLocaleDateString() : "Select date"} */}
-                                    <ChevronDownIcon/>
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-[150%] overflow-hidden p-1" align="start">
-                                <Calendar
-                                    className="w-full text-base"
-                                    mode="single"
-                                    selected={date}
-                                    captionLayout="dropdown"
-                                    onSelect={(date) => {
-                                        // setDate(date)
-                                        // setOpen(false)
-                                    }}
-                                        />
-                            </PopoverContent>
-                        </Popover>
-                        <div className="flex flex-col">
-                            <Label htmlFor="time-picker" className=""></Label>
-                            <Input
-                                type="time"
-                                id="time-picker"
-                                step="1"
-                                defaultValue={curTime}
-                                onChange={(e) => setCurTime(e.target.value)}
-                                className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-                              />
-                        </div>
-                    </div>
-                </div>
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
-                </DialogClose>
-                <Button type="submit">Save data</Button>
-              </DialogFooter>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button type="submit">Save data</Button>
+                </DialogFooter>
+              </form>
             </DialogContent>
 
-          </form>
         </Dialog>
     )
 }
