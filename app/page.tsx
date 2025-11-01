@@ -7,8 +7,19 @@ import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-ste
 import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+
+export default async function Home() {
+  const supabase = createClient();
+  const user = await supabase.auth.getUser();
+
+  // redirects user to protected logged in home page if they are signed in or can change to show different home page view if signed in
+  if (user) {
+    redirect("/protected");
+  }
+
   return (
     <main className="min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -24,10 +35,11 @@ export default function Home() {
           </div>
         </nav>
         <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
+          {/* <Hero /> */}
           <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+            {/* <h2 className="font-medium text-xl mb-4">Next steps</h2>
+            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />} */}
+
           </main>
         </div>
 

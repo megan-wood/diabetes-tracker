@@ -23,6 +23,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export default function GlucoseForm() {
    function getCurTimeStr() {
@@ -39,6 +40,7 @@ export default function GlucoseForm() {
     // const [time, setTime] = useState(new Date()); 
     // const [date, setDate] = useState<Date>(new Date());
     const [curTime, setCurTime] = useState(getCurTimeStr());
+    const [glucoseType, setGlucoseType] = useState("fasting");
 
    
 
@@ -73,7 +75,6 @@ export default function GlucoseForm() {
         // make sure id is unique to identify the row and user id should keep track of val from
         const { error } = await supabase
           .from("glucose_logs")
-          .insert({user_id: user.id, time: datetime, glucose_value: glucose});
         if (!error) {
           setOpen(false);
         }
@@ -93,6 +94,7 @@ export default function GlucoseForm() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col gap-6 pb-5">
+                  {/* glucose input */}
                   <div className="flex flex-col gap-2">
                       <Label htmlFor="glucose">Glucose Value</Label>
                       <Input 
@@ -104,6 +106,7 @@ export default function GlucoseForm() {
                           onChange={(e) => setGlucose(e.target.value)}
                       />
                   </div>
+                  {/* date and time picker */}
                   <div className="flex flex-col gap-2">
                       <Label htmlFor="dateTime">Date and Time</Label>
                       <div className="flex justify-center">
@@ -145,13 +148,30 @@ export default function GlucoseForm() {
                                 />
                           </div>
                       </div>
+                      {/* glucose type picker */}
+                      <Label htmlFor="glucose-type">Glucose Type</Label>
+                      <ToggleGroup type="single" variant="outline" defaultValue="fasting" aria-label="glucose type"
+                        value={glucoseType}
+                        onValueChange={(glucoseType) => {
+                          if (glucoseType) {
+                            setGlucoseType(glucoseType);
+                          }
+                        }}
+                      >
+                        <ToggleGroupItem value="fasting" aria-label="Fasting type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">Fasting</ToggleGroupItem>
+                        <ToggleGroupItem value="beforeMeal" aria-label="Before meal type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">Before Meal</ToggleGroupItem>
+                        <ToggleGroupItem value="afterMeal" aria-label="After meal type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">After Meal</ToggleGroupItem>
+                      </ToggleGroup>
+                      <div>
+
+                      </div>
                   </div>
                 </div>
                 <DialogFooter>
                   <DialogClose asChild>
                     <Button variant="outline" className="px-4 py-2">Cancel</Button>
                   </DialogClose>
-                  <Button type="submit" className="border px-4 py-2">Save data</Button>
+                  <Button type="submit" className="border px-4 py-2">Save</Button>
                 </DialogFooter>
               </form>
             </DialogContent>
