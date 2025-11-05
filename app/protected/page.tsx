@@ -1,13 +1,16 @@
 import { redirect } from "next/navigation";
 
+// import { useState } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 // import { GlucoseForm } from "./glucose-form";
 import GlucoseForm from "./glucose-form";
+import RecentData from "./recent-data";
 
 
 export default async function ProtectedPage() {
+  // const [entries, setEntries] = useState<any[]>([]); 
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getClaims();
@@ -28,13 +31,33 @@ export default async function ProtectedPage() {
     profile = profileData; 
   }
 
-  const handleNewData = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // const supabase = createClient();
+  // const handleNewData = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   // const supabase = createClient();
 
 
-  }
-  
+  // }
+
+  // useEffect(() => {
+  //   const fetchEntries = async () => {
+  //     const { data } = await supabase 
+  //       .from("glucose_logs")
+  //       .select("*")
+  //       .order("time", {ascending: false})
+  //       .limit(5)
+  //     setEntries(data || []); 
+  //   };
+  //   fetchEntries();
+  // }, []);
+
+  const { data: entries } = await supabase
+    .from("glucose_logs")
+    .select("*")
+    .order("time", {ascending: false})
+    .limit(5);
+
+    console.log("entries: ", entries); 
+
   return (
     // <div className="flex-1 w-full flex flex-col gap-12">
     //   <div className="flex flex-col gap-2 items-start"> 
@@ -53,6 +76,7 @@ export default async function ProtectedPage() {
 
         <h2>Current Trends:</h2>
         <GlucoseForm/>
+        <RecentData entries={entries || []}/>
     </div>
   );
 }

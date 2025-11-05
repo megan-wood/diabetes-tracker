@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 import {
   Dialog,
@@ -33,6 +34,7 @@ export default function GlucoseForm() {
       return `${hours}:${mins}`;
     };
 
+    const router = useRouter(); 
     const [glucose, setGlucose] = useState("");
     const [open, setOpen] = useState(false); 
     // const [date, setDate] = useState<Date | undefined>(undefined);
@@ -73,11 +75,15 @@ export default function GlucoseForm() {
 
 
         // make sure id is unique to identify the row and user id should keep track of val from
-        const { error } = await supabase
+        const { data: insertedData, error } = await supabase
           .from("glucose_logs")
           .insert({user_id: user.id, time: datetime, glucose_value: glucose, type: glucoseType})
+        console.log("insertedData: ", insertedData); 
         if (!error) {
           setOpen(false);
+          // onNewEntry(insertedData[0]);
+          router.refresh(); 
+          // window.location.reload();  // reload the page after entry so that new one can appear in recent data
         }
     }
 
