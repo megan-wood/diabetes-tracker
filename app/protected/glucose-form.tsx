@@ -75,6 +75,7 @@ export default function GlucoseForm() {
         // make sure id is unique to identify the row and user id should keep track of val from
         const { error } = await supabase
           .from("glucose_logs")
+          .insert({user_id: user.id, time: datetime, glucose_value: glucose, type: glucoseType})
         if (!error) {
           setOpen(false);
         }
