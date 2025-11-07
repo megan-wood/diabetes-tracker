@@ -1,12 +1,19 @@
 import { redirect } from "next/navigation";
 
-// import { useState } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 // import { GlucoseForm } from "./glucose-form";
 import GlucoseForm from "./glucose-form";
 import RecentData from "./recent-data";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 
 export default async function ProtectedPage() {
@@ -50,11 +57,13 @@ export default async function ProtectedPage() {
   //   fetchEntries();
   // }, []);
 
+  
+
   const { data: entries } = await supabase
     .from("glucose_logs")
     .select("*")
-    .order("time", {ascending: false})
-    .limit(5);
+    .order("time", {ascending: false});
+    // .limit(5);
 
     console.log("entries: ", entries); 
 
@@ -71,12 +80,14 @@ export default async function ProtectedPage() {
     //     <FetchDataSteps />
     //   </div>
     // </div>
-    <div className="flex flex-col w-full m-5">
+    <div className="flex flex-col w-full m-5 space-y-2">
         <h3 className="font-bold ">{profile.first_name}, Welcome to your Diabetes Dashboard</h3>
 
         <h2>Current Trends:</h2>
         <GlucoseForm/>
-        <RecentData entries={entries || []}/>
+        <h2>Your last 5 entries:</h2>
+        <h2>Filter Option:</h2>
+        <RecentData initialEntries={entries || []}/>
     </div>
   );
 }

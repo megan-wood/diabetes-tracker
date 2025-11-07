@@ -31,7 +31,8 @@ export default function GlucoseForm() {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, "0");
       const mins = now.getMinutes().toString().padStart(2, "0");
-      return `${hours}:${mins}`;
+      const secs = now.getSeconds().toString().padStart(2, "0");
+      return `${hours}:${mins}:${secs}`;
     };
 
     const router = useRouter(); 
@@ -39,12 +40,18 @@ export default function GlucoseForm() {
     const [open, setOpen] = useState(false); 
     // const [date, setDate] = useState<Date | undefined>(undefined);
     const [date, setDate] = useState<Date>(new Date());
-    // const [time, setTime] = useState(new Date()); 
+    const [time, setTime] = useState(getCurTimeStr()); 
     // const [date, setDate] = useState<Date>(new Date());
-    const [curTime, setCurTime] = useState(getCurTimeStr());
+    // const [curTime, setCurTime] = useState(getCurTimeStr());
     const [glucoseType, setGlucoseType] = useState("fasting");
 
-   
+    function handleOpenChange(isOpen: boolean) {
+      setOpen(isOpen);  // maintain the currrent boolean value for open
+      if (isOpen) {
+        console.log("isOpen true"); 
+        setTime(getCurTimeStr()); 
+      }
+    }
 
     const handleNewData = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -69,9 +76,11 @@ export default function GlucoseForm() {
         // const profilesUserId = await supabase.
         
         // combines selected date and time into single Date element to insert in db
-        const [hours, mins] = curTime.split(":").map(Number);
+        const [hours, mins, secs] = time.split(":").map(Number);
+        // const [hours, mins] = curTime.split(":").map(Number);
+        
         const datetime = new Date(date);
-        datetime.setHours(hours, mins, 0, 0);
+        datetime.setHours(hours, mins, secs || 0);
 
 
         // make sure id is unique to identify the row and user id should keep track of val from
@@ -80,15 +89,18 @@ export default function GlucoseForm() {
           .insert({user_id: user.id, time: datetime, glucose_value: glucose, type: glucoseType})
         console.log("insertedData: ", insertedData); 
         if (!error) {
+          setGlucose("");
+          setGlucoseType("fasting");
           setOpen(false);
           // onNewEntry(insertedData[0]);
+          console.log("refreshing page"); 
           router.refresh(); 
           // window.location.reload();  // reload the page after entry so that new one can appear in recent data
         }
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
               <Button className="w-[25%]" >Add a glucose value</Button>
             </DialogTrigger>
@@ -125,8 +137,8 @@ export default function GlucoseForm() {
                                       id="dateTime"
                                       className="w-32 justify-between font-formal"
                                   >
-                                      {date.toLocaleDateString()}
-                                      {/* {date ? date.toLocaleDateString() : "Select date"} */}
+                                      {/* {date?.toLocaleDateString()} */}
+                                      {date ? date.toLocaleDateString() : "Select date"}
                                       <ChevronDownIcon/>
                                   </Button>
                               </PopoverTrigger>
@@ -137,20 +149,23 @@ export default function GlucoseForm() {
                                       selected={date}
                                       captionLayout="dropdown"
                                       onSelect={(date) => {
-                                          // setDate(date)
+                                        if (date) {
+                                          setDate(date)
+                                        }
                                           // setOpen(false)
                                       }}
-                                          />
+                                    />
                               </PopoverContent>
                           </Popover>
                           <div className="flex flex-col">
+                              <p>{time}</p>
                               <Label htmlFor="time-picker" className=""></Label>
                               <Input
                                   type="time"
                                   id="time-picker"
                                   step="1"
-                                  defaultValue={curTime}
-                                  onChange={(e) => setCurTime(e.target.value)}
+                                  defaultValue={time.slice(0,5)}
+                                  onChange={(e) => setTime(e.target.value)}
                                   className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                                 />
                           </div>
