@@ -4,8 +4,9 @@ import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 // import { GlucoseForm } from "./glucose-form";
-import GlucoseForm from "./glucose-form";
-import RecentData from "./recent-data";
+// import GlucoseForm from "./glucose-form";
+// import RecentData from "./recent-data";
+import GlucoseDashboard from "./glucose-dashboard";
 
 import {
   Select,
@@ -85,11 +86,7 @@ export default async function ProtectedPage() {
         {/* <RealtimeTest/> */}
         <h3 className="font-bold ">{profile.first_name}, Welcome to your Diabetes Dashboard</h3>
 
-        <h2>Current Trends:</h2>
-        <GlucoseForm/>
-        <h2>Your last 5 entries:</h2>
-        <h2>Filter Option:</h2>
-        <RecentData initialEntries={entries || []}/>
+       <GlucoseDashboard/>
     </div>
   );
 }

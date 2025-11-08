@@ -17,7 +17,7 @@ export async function AuthButton() {
   let profile; 
   // let profileError; 
 
-  console.log("user: " + user?.id); 
+  // console.log("user: " + user?.id); 
   
   if (user) {
     const { data: profileData, error: profileError } = await supabase

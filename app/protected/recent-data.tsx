@@ -22,13 +22,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function RecentData({ initialEntries }: {initialEntries: any[]}) {
+interface RecentDataProps {
+  entries: any[];
+  setEntries: React.Dispatch<React.SetStateAction<any[]>>;
+  filter: string; 
+  setFilter: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function RecentData({ entries, setEntries, filter, setFilter }: RecentDataProps) {
     // const supabase = createClient(); 
     // const {data: {user}} = await supabase.auth.getUser(); 
     // console.log("user recent data: ", user); 
     // const [entries, setEntries] = useState(initialEntries);
-    const [entries, setEntries] = useState<any[]>([]);
-    const [filter, setFilter] = useState("all");
+    
+    // const [entries, setEntries] = useState<any[]>([]);  // most recently used
+    // const [filter, setFilter] = useState("all");  // most recently used 
   
     function getTypeString(typeString: string): string {
       if (typeString == "fasting") {
@@ -56,6 +64,7 @@ export default function RecentData({ initialEntries }: {initialEntries: any[]}) 
             .select("*")
             .order("time", {ascending: false})
             .eq("type", filter)
+            // .eq("type", filter === "all" ? undefined : filter)
             .limit(5); 
           setEntries(data ?? []);
         }
@@ -66,21 +75,33 @@ export default function RecentData({ initialEntries }: {initialEntries: any[]}) 
 
     // console.log("realtime client: ", supabase.realtime); 
 
-    useEffect(() => {
-      const channel = supabase 
-        .channel("glucose_logs")
-        .on("postgres_changes", { event: "*", schema: "public", table: "glucose_logs" }, 
-          (payload) => {
-            console.log("realtime payload: ", payload); 
-            setEntries((prev) => [payload.new, ...prev]); 
-          }
-        )
-        .subscribe(); 
+  //   useEffect(() => {
+  //     const channel = supabase 
+  //       .channel("glucose_logs")
+  //       .on("postgres_changes", { event: "*", schema: "public", table: "glucose_logs" }, 
+  //         (payload) => {
+  //           const newEntry = payload.new as { type: string; glucose_value: number; row_id: string; time: string };
+  //           console.log("new entry: ", newEntry);
+  //           // console.log("realtime payload: ", payload); 
+  //           setEntries((prev) => {
+  //             console.log("filter: ", filter); 
+  //             if (filter == "all") {
+  //               console.log("new entry: ", newEntry);
+  //               console.log("new entry type: ", newEntry.type); 
+  //               console.log("adding new entry");
+  //               console.log("filter inside: ", filter);
+  //               return [newEntry, ...prev].slice(0, 5); 
+  //             }
+  //             return prev;
+  //           });
+  //         }
+  //       )
+  //       .subscribe(); 
 
-    return () => {
-      supabase.removeChannel(channel); 
-    };
-   }, []);
+  //   return () => {
+  //     supabase.removeChannel(channel); 
+  //   };
+  //  }, []);
 
     return (
         // <></>

@@ -26,7 +26,10 @@ import {
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-export default function GlucoseForm() {
+interface GlucoseFormProps {
+  onNewEntry?: (entry: any) => void; 
+}
+export default function GlucoseForm( {onNewEntry }: GlucoseFormProps) {
    function getCurTimeStr() {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, "0");
@@ -48,7 +51,7 @@ export default function GlucoseForm() {
     function handleOpenChange(isOpen: boolean) {
       setOpen(isOpen);  // maintain the currrent boolean value for open
       if (isOpen) {
-        console.log("isOpen true"); 
+        // console.log("isOpen true"); 
         setTime(getCurTimeStr()); 
       }
     }
@@ -58,7 +61,7 @@ export default function GlucoseForm() {
         // const supabase = createClient(); 
         const {data: { user } } = await supabase.auth.getUser();
         // const user = await supabase.auth.getUser();
-        console.log("user data: ", user); 
+        // console.log("user data: ", user); 
 
         if (!user) {
           console.log("user is not logged in"); 
@@ -71,7 +74,7 @@ export default function GlucoseForm() {
           .from("profiles")
           .select("*")
           .eq("id", user.id);
-        console.log("profile data: ", data); 
+        // console.log("profile data: ", data); 
 
         // const profilesUserId = await supabase.
         
@@ -87,14 +90,17 @@ export default function GlucoseForm() {
         const { data: insertedData, error } = await supabase
           .from("glucose_logs")
           .insert({user_id: user.id, time: datetime, glucose_value: glucose, type: glucoseType})
-        console.log("insertedData: ", insertedData); 
+          .select();
+        // console.log("insertedData: ", insertedData); 
         if (!error) {
+          // console.log("insertedData: ", insertedData); 
+          onNewEntry?.(insertedData[0]);  // notify parent that there is new entry and pass actual new entry value
           setGlucose("");
           setGlucoseType("fasting");
           setOpen(false);
           // onNewEntry(insertedData[0]);
-          console.log("refreshing page"); 
-          router.refresh(); 
+          // console.log("refreshing page"); 
+          // router.refresh(); 
           // window.location.reload();  // reload the page after entry so that new one can appear in recent data
         }
     }
