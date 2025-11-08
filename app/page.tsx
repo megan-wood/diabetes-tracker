@@ -7,12 +7,12 @@ import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-ste
 import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 
 export default async function Home() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const user = await supabase.auth.getUser();
 
   // redirects user to protected logged in home page if they are signed in or can change to show different home page view if signed in

@@ -50,7 +50,7 @@ export default function RecentData({ entries, setEntries, filter, setFilter }: R
 
     useEffect(() => {
       const fetchEntries = async () => {
-        console.log("filter: ", filter); 
+        console.log("filter: ", filter, " refetching entries"); 
         if (filter == "all") {
           const { data } = await supabase
             .from("glucose_logs")

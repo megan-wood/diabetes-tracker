@@ -27,9 +27,10 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface GlucoseFormProps {
-  onNewEntry?: (entry: any) => void; 
+  onNewEntry?: (entry: any) => void;
+  filter: string 
 }
-export default function GlucoseForm( {onNewEntry }: GlucoseFormProps) {
+export default function GlucoseForm( {onNewEntry, filter }: GlucoseFormProps) {
    function getCurTimeStr() {
       const now = new Date();
       const hours = now.getHours().toString().padStart(2, "0");
@@ -94,7 +95,12 @@ export default function GlucoseForm( {onNewEntry }: GlucoseFormProps) {
         // console.log("insertedData: ", insertedData); 
         if (!error) {
           // console.log("insertedData: ", insertedData); 
-          onNewEntry?.(insertedData[0]);  // notify parent that there is new entry and pass actual new entry value
+          console.log("filter in form: ", filter); 
+          console.log("filter of new entry: ", insertedData[0].type);
+          console.log("first: ", (filter == "all"), " second: ", (filter == insertedData[0].type));
+          if (filter == "all" || filter == insertedData[0].type) {
+            onNewEntry?.(insertedData[0]);  // notify parent that there is new entry and pass actual new entry value
+          }
           setGlucose("");
           setGlucoseType("fasting");
           setOpen(false);
