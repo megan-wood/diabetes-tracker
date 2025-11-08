@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import supabase  from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 import {
@@ -55,7 +55,7 @@ export default function GlucoseForm() {
 
     const handleNewData = async (e: React.FormEvent) => {
         e.preventDefault();
-        const supabase = createClient(); 
+        // const supabase = createClient(); 
         const {data: { user } } = await supabase.auth.getUser();
         // const user = await supabase.auth.getUser();
         console.log("user data: ", user); 

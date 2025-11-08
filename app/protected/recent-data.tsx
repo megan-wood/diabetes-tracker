@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
+import supabase from "@/lib/supabase/client";
 
 import {
   Table,
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 
 export default function RecentData({ initialEntries }: {initialEntries: any[]}) {
-    const supabase = createClient(); 
+    // const supabase = createClient(); 
     // const {data: {user}} = await supabase.auth.getUser(); 
     // console.log("user recent data: ", user); 
     // const [entries, setEntries] = useState(initialEntries);
@@ -62,6 +62,25 @@ export default function RecentData({ initialEntries }: {initialEntries: any[]}) 
       };
       fetchEntries();
     }, [filter]);  // refetches when filter changes
+
+
+    // console.log("realtime client: ", supabase.realtime); 
+
+    useEffect(() => {
+      const channel = supabase 
+        .channel("glucose_logs")
+        .on("postgres_changes", { event: "*", schema: "public", table: "glucose_logs" }, 
+          (payload) => {
+            console.log("realtime payload: ", payload); 
+            setEntries((prev) => [payload.new, ...prev]); 
+          }
+        )
+        .subscribe(); 
+
+    return () => {
+      supabase.removeChannel(channel); 
+    };
+   }, []);
 
     return (
         // <></>

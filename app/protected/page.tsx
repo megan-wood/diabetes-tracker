@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+// import RealtimeTest from "./test";
 
 
 export default async function ProtectedPage() {
@@ -81,6 +82,7 @@ export default async function ProtectedPage() {
     //   </div>
     // </div>
     <div className="flex flex-col w-full m-5 space-y-2">
+        {/* <RealtimeTest/> */}
         <h3 className="font-bold ">{profile.first_name}, Welcome to your Diabetes Dashboard</h3>
 
         <h2>Current Trends:</h2>
