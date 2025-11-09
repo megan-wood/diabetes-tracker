@@ -15,6 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 // import RealtimeTest from "./test";
 
 
@@ -87,6 +89,7 @@ export default async function ProtectedPage() {
         <h3 className="font-bold ">{profile.first_name}, Welcome to your Diabetes Dashboard</h3>
 
        <GlucoseDashboard/>
+       <Link href="/entries-dashboard"><Button>See all entries</Button></Link>
     </div>
   );
 }
