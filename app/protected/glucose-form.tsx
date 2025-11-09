@@ -49,7 +49,7 @@ export default function GlucoseForm( {onNewEntry, filter }: GlucoseFormProps) {
     // const [curTime, setCurTime] = useState(getCurTimeStr());
     const [glucoseType, setGlucoseType] = useState("fasting");
 
-    function handleOpenChange(isOpen: boolean) {
+    function handleOpenChange(isOpen: boolean) {  // TODO: check if this is necessary
       setOpen(isOpen);  // maintain the currrent boolean value for open
       if (isOpen) {
         // console.log("isOpen true"); 
