@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import supabase  from "@/lib/supabase/client";
+import supabase from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 import {
@@ -30,16 +30,16 @@ interface GlucoseFormProps {
   onNewEntry?: (entry: any) => void;
   filter: string 
 }
-export default function GlucoseForm( {onNewEntry, filter }: GlucoseFormProps) {
-   function getCurTimeStr() {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, "0");
-      const mins = now.getMinutes().toString().padStart(2, "0");
-      const secs = now.getSeconds().toString().padStart(2, "0");
-      return `${hours}:${mins}:${secs}`;
-    };
+export default function GlucoseDialog( {onNewEntry, filter }: GlucoseFormProps) {
+  function getCurTimeStr() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const mins = now.getMinutes().toString().padStart(2, "0");
+    const secs = now.getSeconds().toString().padStart(2, "0");
+    return `${hours}:${mins}:${secs}`;
+  };
 
-    const router = useRouter(); 
+    // const router = useRouter(); 
     const [glucose, setGlucose] = useState("");
     const [open, setOpen] = useState(false); 
     // const [date, setDate] = useState<Date | undefined>(undefined);
@@ -71,10 +71,10 @@ export default function GlucoseForm( {onNewEntry, filter }: GlucoseFormProps) {
 
         console.log("logged in user: ", user.id); 
 
-        const { data, error : profileError} = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", user.id);
+        // const { data, error : profileError} = await supabase
+        //   .from("profiles")
+        //   .select("*")
+        //   .eq("id", user.id);
         // console.log("profile data: ", data); 
 
         // const profilesUserId = await supabase.
@@ -182,7 +182,9 @@ export default function GlucoseForm( {onNewEntry, filter }: GlucoseFormProps) {
                                 />
                           </div>
                       </div>
-                      {/* glucose type picker */}
+                    </div>
+                    {/* glucose type picker */}
+                    <div className="flex flex-col gap-2">
                       <Label htmlFor="glucose-type">Glucose Type</Label>
                       <ToggleGroup type="single" variant="outline" defaultValue="fasting" aria-label="glucose type"
                         value={glucoseType}
@@ -197,10 +199,7 @@ export default function GlucoseForm( {onNewEntry, filter }: GlucoseFormProps) {
                         <ToggleGroupItem value="afterMeal" aria-label="After meal type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">After Meal</ToggleGroupItem>
                         {/* className="transition-colors duration-200 bg-white text-black data-[state=on]:bg-black data-[state=on]:text-white border border-black px-4 py-2 rounded" */}
                       </ToggleGroup>
-                      <div>
-
-                      </div>
-                  </div>
+                    </div>
                 </div>
                 <DialogFooter>
                   <DialogClose asChild>

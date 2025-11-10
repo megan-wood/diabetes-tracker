@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase/client";
-import GlucoseForm from "../app/protected/glucose-form";
-import RecentData from "../app/protected/recent-data";
+import GlucoseDialog from "@/components/glucose-dialog";
+import RecentData from "@/components/recent-data";
 
 export default function GlucoseDashboard() {
     const [entries, setEntries] = useState<any[]>([]);
@@ -45,7 +45,7 @@ export default function GlucoseDashboard() {
     return (
         <>
             <h2>Current Trends:</h2>
-            <GlucoseForm onNewEntry={(newEntry) => {
+            <GlucoseDialog onNewEntry={(newEntry) => {
                     console.log("new entry: ", newEntry); 
                 // console.log("new entry glucose: ", newEntry.glucose_value); 
                     console.log("entries being reset"); 

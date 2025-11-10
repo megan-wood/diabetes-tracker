@@ -6,7 +6,7 @@ import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 // import { GlucoseForm } from "./glucose-form";
 // import GlucoseForm from "./glucose-form";
 // import RecentData from "./recent-data";
-import GlucoseDashboard from "../../components/glucose-dashboard";
+import GlucoseDashboard from "@/components/glucose-dashboard";
 
 import {
   Select,

@@ -16,7 +16,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react"; 
-import EditOptions from "./edit-options"
+import EditOptions from "@/components/edit-options"
 
 
 
@@ -62,6 +62,13 @@ export default function EntriesDashboard() {
             );
             console.log("entries after delete: ", entries)
           } 
+
+          if (payload.eventType === "UPDATE") {
+            setEntries((prev) => 
+              prev.map((entry) => 
+                entry.row_id  === payload.new.row_id ? payload.new : entry)
+            );
+          }
         }
       )
       .subscribe();
