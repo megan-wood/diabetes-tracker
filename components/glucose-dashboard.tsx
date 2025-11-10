@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase/client";
-import GlucoseForm from "./glucose-form";
-import RecentData from "./recent-data";
+import GlucoseForm from "../app/protected/glucose-form";
+import RecentData from "../app/protected/recent-data";
 
 export default function GlucoseDashboard() {
     const [entries, setEntries] = useState<any[]>([]);

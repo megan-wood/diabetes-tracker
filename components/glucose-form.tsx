@@ -195,6 +195,7 @@ export default function GlucoseForm( {onNewEntry, filter }: GlucoseFormProps) {
                         <ToggleGroupItem value="fasting" aria-label="Fasting type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">Fasting</ToggleGroupItem>
                         <ToggleGroupItem value="beforeMeal" aria-label="Before meal type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">Before Meal</ToggleGroupItem>
                         <ToggleGroupItem value="afterMeal" aria-label="After meal type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">After Meal</ToggleGroupItem>
+                        {/* className="transition-colors duration-200 bg-white text-black data-[state=on]:bg-black data-[state=on]:text-white border border-black px-4 py-2 rounded" */}
                       </ToggleGroup>
                       <div>
 

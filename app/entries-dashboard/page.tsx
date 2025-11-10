@@ -49,6 +49,28 @@ export default function EntriesDashboard() {
     fetchEntries();
   }, [filter]);  // refetches when filter changes
 
+  useEffect(() => {
+    const channel = supabase 
+      .channel("glucose_logs")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "glucose_logs" },
+        (payload) => {
+          if (payload.eventType === "DELETE") {
+            setEntries((prev) => 
+              prev.filter((entry) => entry.row_id != payload.old.row_id)
+            );
+            console.log("entries after delete: ", entries)
+          } 
+        }
+      )
+      .subscribe();
+
+      return () => { 
+        supabase.removeChannel(channel); 
+      }
+  }, []);
+
   return (
       <div className="m-5 space-y-2">
         <Link href="/protected"><Button variant="outline">Go back to dashboard homepage</Button></Link>
@@ -60,10 +82,10 @@ export default function EntriesDashboard() {
               }
           }}
         >
-          <ToggleGroupItem value="all" aria-label="All filter" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">All</ToggleGroupItem>
-          <ToggleGroupItem value="fasting" aria-label="Fasting filter" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">Fasting</ToggleGroupItem>
-          <ToggleGroupItem value="beforeMeal" aria-label="Before meal fitler" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">Before Meal</ToggleGroupItem>
-          <ToggleGroupItem value="afterMeal" aria-label="After meal filter" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">After Meal</ToggleGroupItem>
+          <ToggleGroupItem value="all" aria-label="All filter" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300 border-gray px-4 py-2 rounded">All</ToggleGroupItem>
+          <ToggleGroupItem value="fasting" aria-label="Fasting filter" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300 border-gray px-4 py-2 rounded">Fasting</ToggleGroupItem>
+          <ToggleGroupItem value="beforeMeal" aria-label="Before meal fitler" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300 border-gray px-4 py-2 rounded">Before Meal</ToggleGroupItem>
+          <ToggleGroupItem value="afterMeal" aria-label="After meal filter" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300 border-gray px-4 py-2 rounded">After Meal</ToggleGroupItem>
         </ToggleGroup>
 
         <Table className="w-[50%]">
@@ -90,7 +112,7 @@ export default function EntriesDashboard() {
                     <Trash2/>Delete
                   </Button></TableCell> */}
                   <TableCell>
-                    <EditOptions/>
+                    <EditOptions selectedEntry={entry}/>
                   </TableCell>
               </TableRow>
             ))}
