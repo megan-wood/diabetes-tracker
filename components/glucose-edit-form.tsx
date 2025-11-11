@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import {
   Dialog, 
@@ -40,6 +40,7 @@ export default function GlucoseEditForm({entry, open, setOpen}: GlucoseEditFormP
   const [date, setDate] = useState(new Date(entry.time));
   const [time, setTime] = useState(getTimeStr(new Date(entry.time))); 
   const [glucoseType, setGlucoseType] = useState(entry.type);
+  const saveButtonRef =  useRef<HTMLButtonElement>(null); 
 
 
   function getTimeStr(chosenTime: Date) {
@@ -70,7 +71,11 @@ export default function GlucoseEditForm({entry, open, setOpen}: GlucoseEditFormP
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-    <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
+    <DialogContent onOpenAutoFocus={(e) => {
+      e.preventDefault();
+      saveButtonRef.current?.focus();
+      }}
+    >
     {/* <DialogContent> */}
       <form onSubmit={handleUpdate}>
         <DialogHeader>
@@ -159,7 +164,7 @@ export default function GlucoseEditForm({entry, open, setOpen}: GlucoseEditFormP
           <DialogClose asChild>
             <Button variant="outline" className="px-4 py-2">Cancel</Button>
           </DialogClose>
-          <Button type="submit" className="border px-4 py-2">Save</Button>
+          <Button type="submit" ref={saveButtonRef} className="border px-4 py-2">Save</Button>
         </DialogFooter>
       </form>
     </DialogContent>
