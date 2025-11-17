@@ -61,10 +61,9 @@ export default function GlucoseEditForm({entry, open, setOpen}: GlucoseEditFormP
     const datetime = new Date(date); 
     datetime.setHours(hours, mins, secs || 0); 
 
-    
     const { data, error } = await supabase
       .from("glucose_logs")
-      .update({time: datetime, glucose_value: glucose, type: glucoseType})
+      .update({time: datetime, glucose_value: glucose, type: glucoseType, notes: notes})
       .eq("row_id", entry.row_id)
       .select();
     console.log("updated entry: ", data); 

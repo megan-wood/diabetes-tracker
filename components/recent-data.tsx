@@ -117,7 +117,7 @@ export default function RecentData({ entries, setEntries, filter, setFilter }: R
           </SelectContent>
         </Select>
 
-        <Table className="w-[50%]">
+        <Table className="w-[75%]">
           {/* <TableCaption>
             The 5 most recent glucose entries. 
           </TableCaption> */}
@@ -126,6 +126,7 @@ export default function RecentData({ entries, setEntries, filter, setFilter }: R
               <TableHead className="w-[25%]">Glucose Value</TableHead>
               <TableHead className="w-[25%]">Type</TableHead>
               <TableHead>Time</TableHead>
+              <TableHead>Notes</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -134,6 +135,7 @@ export default function RecentData({ entries, setEntries, filter, setFilter }: R
                 <TableCell>{entry.glucose_value}</TableCell>
                 <TableCell>{getTypeString(entry.type)}</TableCell>
                 <TableCell>{new Date(entry.time).toLocaleString()}</TableCell>
+                <TableCell className="whitespace-normal break-words">{entry.notes}</TableCell>
               </TableRow>
 
             ))}
