@@ -25,6 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Textarea } from "@/components/ui/textarea";
 
 interface GlucoseFormProps {
   onNewEntry?: (entry: any) => void;
@@ -48,6 +49,7 @@ export default function GlucoseDialog( {onNewEntry, filter }: GlucoseFormProps) 
     // const [date, setDate] = useState<Date>(new Date());
     // const [curTime, setCurTime] = useState(getCurTimeStr());
     const [glucoseType, setGlucoseType] = useState("fasting");
+    const [notes, setNotes] = useState(""); 
 
     function handleOpenChange(isOpen: boolean) {  // TODO: check if this is necessary
       setOpen(isOpen);  // maintain the currrent boolean value for open
@@ -86,11 +88,10 @@ export default function GlucoseDialog( {onNewEntry, filter }: GlucoseFormProps) 
         const datetime = new Date(date);
         datetime.setHours(hours, mins, secs || 0);
 
-
         // make sure id is unique to identify the row and user id should keep track of val from
         const { data: insertedData, error } = await supabase
           .from("glucose_logs")
-          .insert({user_id: user.id, time: datetime, glucose_value: glucose, type: glucoseType})
+          .insert({user_id: user.id, time: datetime, glucose_value: glucose, type: glucoseType, notes: notes})
           .select();
         // console.log("insertedData: ", insertedData); 
         if (!error) {
@@ -200,6 +201,15 @@ export default function GlucoseDialog( {onNewEntry, filter }: GlucoseFormProps) 
                         {/* className="transition-colors duration-200 bg-white text-black data-[state=on]:bg-black data-[state=on]:text-white border border-black px-4 py-2 rounded" */}
                       </ToggleGroup>
                     </div>
+                    <div className="flex flex-col gap-2">
+                      {/* notes section */}
+                      <Label htmlFor="notes">Notes (Optional)</Label>
+                      <Textarea
+                        placeholder="Add any optional notes"
+                        id="notes"
+                        onChange={(e) => setNotes(e.target.value)}
+                      /> 
+                  </div>
                 </div>
                 <DialogFooter>
                   <DialogClose asChild>

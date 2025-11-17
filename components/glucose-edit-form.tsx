@@ -26,6 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Textarea } from "@/components/ui/textarea";
 import supabase from "@/lib/supabase/client";
 import { Pencil } from "lucide-react";
 
@@ -40,6 +41,7 @@ export default function GlucoseEditForm({entry, open, setOpen}: GlucoseEditFormP
   const [date, setDate] = useState(new Date(entry.time));
   const [time, setTime] = useState(getTimeStr(new Date(entry.time))); 
   const [glucoseType, setGlucoseType] = useState(entry.type);
+  const [notes, setNotes] = useState(entry.notes);
   const saveButtonRef =  useRef<HTMLButtonElement>(null); 
 
 
@@ -158,6 +160,16 @@ export default function GlucoseEditForm({entry, open, setOpen}: GlucoseEditFormP
               <ToggleGroupItem value="afterMeal" aria-label="After meal type" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300">After Meal</ToggleGroupItem>
               {/* className="transition-colors duration-200 bg-white text-black data-[state=on]:bg-black data-[state=on]:text-white border border-black px-4 py-2 rounded" */}
             </ToggleGroup>
+          </div>
+          <div className="flex flex-col gap-2">
+            {/* notes section */}
+            <Label htmlFor="notes">Notes (Optional)</Label>
+            <Textarea
+              placeholder="Add any optional notes"
+              value={notes}
+              id="notes"
+              onChange={(e) => setNotes(e.target.value)}
+            /> 
           </div>
         </div>
         <DialogFooter>
