@@ -1,6 +1,6 @@
 "use client"
 
-import supabase from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { useState, useEffect } from "react";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";

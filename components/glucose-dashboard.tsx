@@ -1,7 +1,7 @@
 "use client" 
 
 import { useState, useEffect } from "react";
-import supabase from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import GlucoseDialog from "@/components/glucose-dialog";
 import RecentData from "@/components/recent-data";
 

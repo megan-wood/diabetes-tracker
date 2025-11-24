@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function ProtectedPage() {
   // const [entries, setEntries] = useState<any[]>([]); 
-  try {
+  // try {
     console.log("loading protected page"); 
     const supabase = await createClient();
     console.log("client created");
@@ -46,9 +46,9 @@ export default async function ProtectedPage() {
         .single();
       profile = profileData; 
     }
-  } catch (err) {
-    console.error("protected page error: ", err); 
-  }
+  // } catch (err) {
+  //   console.error("protected page error: ", err); 
+  // }
 
   // const handleNewData = async (e: React.FormEvent) => {
   //   e.preventDefault();

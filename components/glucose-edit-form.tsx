@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Textarea } from "@/components/ui/textarea";
-import supabase from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { Pencil } from "lucide-react";
 
 interface GlucoseEditFormProps {
