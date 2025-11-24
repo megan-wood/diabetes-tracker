@@ -37,8 +37,11 @@ export function LoginForm({
         email,
         password,
       });
+      // const { data: { session } } = await supabase.auth.getSession();
+      // console.log("Session after login:", session);
       if (error) throw error;
       // Update this route to redirect to an authenticated route. The user already has an active session.
+      console.log("going to protected");
       router.push("/protected");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");

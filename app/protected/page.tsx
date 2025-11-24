@@ -22,24 +22,32 @@ import { Button } from "@/components/ui/button";
 
 export default async function ProtectedPage() {
   // const [entries, setEntries] = useState<any[]>([]); 
-  const supabase = await createClient();
+  try {
+    console.log("loading protected page"); 
+    const supabase = await createClient();
+    console.log("client created");
 
-  const { data, error } = await supabase.auth.getClaims();
-  // const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.claims) {
-    redirect("/auth/login");
-  }
+    const { data, error } = await supabase.auth.getClaims();
+    console.log("data: ", data, " error: ", error);
+    // const { data, error } = await supabase.auth.getUser();
+    if (error || !data?.claims) {
+      console.log("not logged in, redirecting :(")
+      redirect("/auth/login");
+    }
 
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  let user = userData.user;
-  let profile; 
-  if (user) {
-    const { data: profileData, error: profileError } = await supabase
-      .from("profiles")
-      .select()
-      .eq("id", user.id)
-      .single();
-    profile = profileData; 
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    let user = userData.user;
+    let profile; 
+    if (user) {
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select()
+        .eq("id", user.id)
+        .single();
+      profile = profileData; 
+    }
+  } catch (err) {
+    console.error("protected page error: ", err); 
   }
 
   // const handleNewData = async (e: React.FormEvent) => {
