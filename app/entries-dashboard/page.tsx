@@ -36,12 +36,22 @@ export default function EntriesDashboard() {
 
   useEffect(() => {
     const fetchEntries = async () => {
+      const { data: session } = await supabase.auth.getSession();
+      console.log("Dashboard session:", session);
+
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      let user = userData.user;
+
       console.log("filter: ", filter); 
-      let query = supabase.from("glucose_logs").select("*").order("time", {ascending: false})
+      let query = supabase.from("glucose_logs")
+                          .select("*")
+                          // .eq("user_id", user?.id)
+                          .order("time", {ascending: false})
       if (filter != "all") {
         query = query.eq("type", filter);
       }
       const { data, error } = await query;
+      console.log("entries data: ", data);
 
       setEntries(data ?? []); 
       console.log("entries dashboard: ", entries); 
@@ -60,7 +70,7 @@ export default function EntriesDashboard() {
             setEntries((prev) => 
               prev.filter((entry) => entry.row_id != payload.old.row_id)
             );
-            console.log("entries after delete: ", entries)
+            // console.log("entries after delete: ", entries)
           } 
 
           if (payload.eventType === "UPDATE") {
@@ -68,6 +78,23 @@ export default function EntriesDashboard() {
               prev.map((entry) => 
                 entry.row_id  === payload.new.row_id ? payload.new : entry)
             );
+          }
+
+          // entry added to database from iPhone or another window of website
+          if (payload.eventType === "INSERT") {
+            console.log("INSERT database update");
+            setEntries((prev) => {
+              const entry = payload.new as {
+                row_id: string;
+                type: string;
+                glucose_value: number;
+                time: string;
+                notes?: string;
+              }; 
+              const exists = prev.some((e) => e.row_id === entry.row_id);
+              if (exists) return prev;
+              return [entry, ...prev].slice(0, 5);
+            });
           }
         }
       )

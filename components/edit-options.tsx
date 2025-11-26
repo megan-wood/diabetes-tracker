@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"; 
-import supabase from "@/lib/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -48,7 +48,7 @@ export default function EditOptions({selectedEntry}: any) {
           .delete()
           .eq("row_id", selectedEntry.row_id)
           .select();
-      console.log("entry that was deleted: ", data);
+    //   console.log("entry that was deleted: ", data);
   }
 
   return (

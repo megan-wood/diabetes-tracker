@@ -30,7 +30,7 @@ export default function GlucoseDashboard() {
                   // if the new entry doesn't match the current filter, don't show it
                   console.log("filter: ", filter, " entry filter: ", entry.type); 
                   if (filter != "all" && filter != entry.type) return prev; 
-
+                  console.log("entries after db update: ", prev, " will become: ", [entry, ...prev]);
                   return [entry, ...prev].slice(0, 5); 
               });
             }
