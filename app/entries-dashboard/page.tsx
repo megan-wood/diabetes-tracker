@@ -74,10 +74,13 @@ export default function EntriesDashboard() {
           } 
 
           if (payload.eventType === "UPDATE") {
-            setEntries((prev) => 
-              prev.map((entry) => 
-                entry.row_id  === payload.new.row_id ? payload.new : entry)
-            );
+            setEntries((prev) => {
+              const updated = prev.map((entry) => 
+                entry.row_id  === payload.new.row_id ? payload.new : entry
+              );
+              // sort in descending order
+              return updated.sort((a,b) => new Date(b.time).getTime() - new Date(a.time).getTime()); 
+            });
           }
 
           // entry added to database from iPhone or another window of website
@@ -93,7 +96,9 @@ export default function EntriesDashboard() {
               }; 
               const exists = prev.some((e) => e.row_id === entry.row_id);
               if (exists) return prev;
-              return [entry, ...prev].slice(0, 5);
+              const updated = [entry, ...prev];
+              // sort in descending order
+              return updated.sort((a,b) => new Date(b.time).getTime() - new Date(a.time).getTime());
             });
           }
         }
