@@ -98,6 +98,7 @@ export default async function ProtectedPage() {
 
        <GlucoseDashboard/>
        <Link href="/entries-dashboard"><Button>See all entries</Button></Link>
+       <Link href="/analytics-dashboard"><Button>See analytics</Button></Link>
     </div>
   );
 }
