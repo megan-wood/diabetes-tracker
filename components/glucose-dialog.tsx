@@ -132,7 +132,7 @@ export default function GlucoseDialog( {onNewEntry, filter }: GlucoseFormProps) 
                       <Input 
                           id="glucose"
                           type="number"
-                          placeholder="100"
+                          placeholder="ex: 100"
                           required
                           value={glucose}
                           onChange={(e) => setGlucose(e.target.value)}
