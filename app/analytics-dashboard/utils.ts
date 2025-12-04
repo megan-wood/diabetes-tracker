@@ -1,4 +1,6 @@
-export function calculateFastingAvg(months: number, entries: any[]): number {
+import { Entry } from "@/app/analytics-dashboard/entry";
+
+export function calculateFastingAvg(months: number, entries: Entry[]): number {
   let avg = 0; 
   const values = getFastingEntriesInRange(months, entries);
   console.log("values: ", values); 
@@ -6,7 +8,7 @@ export function calculateFastingAvg(months: number, entries: any[]): number {
   return avg; 
 }
 
-function getFastingEntriesInRange(months: number, entries: any[]) {
+function getFastingEntriesInRange(months: number, entries: Entry[]) {
   const fastingEntries = entries.filter((entry) => entry.type === "fasting"); 
   console.log("fasting entries: ", fastingEntries); 
   const curDate = new Date();

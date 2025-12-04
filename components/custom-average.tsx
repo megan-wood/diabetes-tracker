@@ -13,8 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { calculateFastingAvg } from "@/app/analytics-dashboard/utils";
+import { Entry } from "@/app/analytics-dashboard/entry";
 
-export default function CustomAverage(entries: any) {
+export default function CustomAverage({ entries }: { entries: Entry[]}) {
   const [formOpen, setFormOpen] = useState(false); 
   const [avgOpen, setAvgOpen] = useState(false); 
   const [months, setMonths] = useState(""); 
@@ -42,7 +43,7 @@ export default function CustomAverage(entries: any) {
           <DialogContent>
             <form
             onSubmit={(e) => {
-              e.preventDefault;
+              e.preventDefault();
               handleAvgRequest();
             }}>
               <DialogHeader>
@@ -70,9 +71,10 @@ export default function CustomAverage(entries: any) {
       <Dialog open={avgOpen} onOpenChange={setAvgOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Your fasting average for {months} months:</DialogTitle>
+              <DialogTitle>Custom Fasting Average</DialogTitle>
+              <DialogDescription>Your fasting average for {months} months:</DialogDescription>
             </DialogHeader>
-            <p>average:{avg}</p>
+            <p>average: {avg}</p>
             <DialogFooter>
               <Button variant="outline" onClick={() => setAvgOpen(false)}>Close</Button>
               <Button onClick={() => {

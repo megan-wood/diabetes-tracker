@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase/client";
 import CustomAverage from "@/components/custom-average";
 import { calculateFastingAvg } from "./utils";
+import { Entry } from "@/app/analytics-dashboard/entry";
 
 export default function AnalyticsDashboard() {
   // get entries from database to do calculations with
   // const entries = await fetchEntries();
   // console.log("entries: ", entries);
-  const [entries, setEntries] = useState<any[]>([]);
+  const [entries, setEntries] = useState<Entry[]>([]);
 
   useEffect(() => {
     async function fetchEntries() {

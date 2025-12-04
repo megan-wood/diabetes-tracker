@@ -94,11 +94,13 @@ export default async function ProtectedPage() {
     // </div>
     <div className="flex flex-col w-full m-5 space-y-2">
         {/* <RealtimeTest/> */}
-        <h3 className="font-bold ">{profile.first_name}, Welcome to your Diabetes Dashboard</h3>
+      <h3 className="font-bold ">{profile.first_name}, Welcome to your Diabetes Dashboard</h3>
 
-       <GlucoseDashboard/>
-       <Link href="/entries-dashboard"><Button>See all entries</Button></Link>
-       <Link href="/analytics-dashboard"><Button>See analytics</Button></Link>
+      <GlucoseDashboard/>
+      <div className="flex flex-row gap-3">
+        <Link href="/entries-dashboard"><Button>See all entries</Button></Link>
+        <Link href="/analytics-dashboard"><Button>See analytics</Button></Link>
+      </div>
     </div>
   );
 }
