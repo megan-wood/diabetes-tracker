@@ -127,14 +127,14 @@ export default function EntriesDashboard() {
         <ToggleGroupItem value="afterMeal" aria-label="After meal filter" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground transition-colors duration-300 border-gray px-4 py-2 rounded">After Meal</ToggleGroupItem>
       </ToggleGroup>
 
-      <Table className="w-[50%]">
+      <Table className="w-[65%] table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[10%]">Glucose Value</TableHead>
-            <TableHead className="w-[10%]">Type</TableHead>
-            <TableHead className="w-[5%]">Time</TableHead>
-            <TableHead>Notes</TableHead>
-            <TableHead className="w-[1%]"></TableHead>
+            <TableHead className="w-[4%]">Glucose Value</TableHead>
+            <TableHead className="w-[4%]">Type</TableHead>
+            <TableHead className="w-[6%]">Time</TableHead>
+            <TableHead className="w-[10%]">Notes</TableHead>
+            <TableHead className="w-[2%]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
