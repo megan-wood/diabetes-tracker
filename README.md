@@ -2,7 +2,7 @@
 https://diabetes-tracker-chi.vercel.app/
 
 ## Signup Page
-<img width="1408" height="705" alt="image" src="https://github.com/user-attachments/assets/18e46ce5-a636-41c8-91d0-e14967984dca" />
+<img width="1440" height="709" alt="image" src="https://github.com/user-attachments/assets/c98a8cd8-ccdf-41d7-948b-17c30b37676a" />
 
 ## Login Page:
 <img width="1429" height="713" alt="image" src="https://github.com/user-attachments/assets/735cc940-2352-4497-8660-1843d61d7370" />
